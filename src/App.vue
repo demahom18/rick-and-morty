@@ -12,8 +12,13 @@
   <div class="welcome-text">
     CLICK <span @click="startGame">PLAY</span> TO START PLAYING 
   </div>
+
   <div class="playgrid" >
-    <RickMorty  v-for="n in 9" :key="n"/>
+    <RickMorty 
+      @wtf="handleClick" 
+      v-for="n in 9" 
+      :key="n"
+    />
   </div>
 </template>
 
@@ -30,7 +35,49 @@ export default {
       score: 0,
       level: 1
     }
-  }, 
+  },  
+  methods: {
+    handleClick(classList){
+      classList.forEach(cl => {
+        if(cl === 'up') this.score++
+        // console.log(cl)
+      }) 
+      
+    },
+    startGame() {
+      console.log(this)
+      let timeUp = 11
+      const gameboard = this.$.appContext.app._container
+      const playgrid = gameboard.getElementsByClassName('hole')
+      let timer, delay
+      timer = 1000 - this.level*100 //10 levels
+      delay = timer + 300
+      const timeOut = setInterval(() => {
+       
+        if(timeUp > 0 ){
+          const ricky = this.pickRandom(playgrid)
+          this.showHead(ricky, timer) 
+          timeUp--
+        }
+        if (timeUp <= 0) {
+          clearInterval(timeOut)
+        }
+        if(timer <= 0) clearInterval(timeOut)
+      }, delay)
+    },
+
+    showHead(headToShow, timer){
+      headToShow.classList.add('up')
+      setTimeout(() => {
+        headToShow.classList.remove('up')
+      }, timer)
+      
+    },
+    
+    pickRandom(grid) {
+      return grid[ Math.floor(Math.random() * 9) ]
+    }
+  }
 }
 </script>
 

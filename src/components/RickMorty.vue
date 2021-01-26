@@ -1,5 +1,5 @@
 <template>
-  <div class="hole">
+  <div class="hole" @click="sendClick">
     <div class="cloud">
         <img src="../assets/cloud.png" alt="cloud">
     </div>
@@ -10,7 +10,17 @@
 </template>
 
 <script>
-
+import throttle from 'lodash.throttle'
+export default {
+    methods: {
+        //To impeach multiple click on the same element
+        //300 ms "reaction time"
+        sendClick: throttle(function(){
+           this.$emit('wtf', this.$el.classList)
+        
+        }, 300) 
+    }
+}
 </script>
 
 <style lang="scss" scoped>
