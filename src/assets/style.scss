@@ -1,0 +1,17 @@
+@font-face{
+    font-family:"Rick-morty";
+    src:url("./rick_and_morty.ttf")
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+
+
+body{
+    font-family: "Rick-morty";
+    background: #313c4b;
+    color: #ddd;
+}
