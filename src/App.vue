@@ -17,7 +17,11 @@
   <div class="welcome-text">
     CLICK <span @click="startGame">PLAY</span> TO START PLAYING 
   </div>
-
+  <GameResult 
+    @restart="startGame"
+    :score="score" 
+    v-if="showModal"
+  />
   <div class="playgrid" >
     <RickMorty 
       @wtf="handleClick" 
@@ -29,16 +33,19 @@
 
 <script>
 import RickMorty from './components/RickMorty.vue';
+import GameResult from './components/GameResult.vue';
 
 export default {
   name: 'App',
   components: {
-    RickMorty
+    RickMorty,
+    GameResult
   },
   data (){
     return {
       score: 0,
-      level: 1
+      level: 1,
+      showModal: true
     }
   },  
   methods: {
@@ -50,6 +57,7 @@ export default {
       
     },
     startGame() {
+      this.showModal = false
       let timeUp = 11
       const gameboard = this.$.appContext.app._container
       const playgrid = gameboard.getElementsByClassName('hole')
@@ -72,8 +80,19 @@ export default {
     },
 
     upLevel() {
-      this.level++
-      this.startGame()
+      if(this.level !== 10){
+        this.level++
+        this.startGame()
+      }
+      else {
+        setTimeout(() => {
+          this.showResult()
+        }, 500)
+      }
+      
+    },
+    showResult() {
+      return this.showModal = true;
     },
 
     showHead(headToShow, timer){
@@ -83,6 +102,7 @@ export default {
       }, timer)
       
     },
+    
     
     pickRandom(grid) {
       return grid[ Math.floor(Math.random() * 9) ]
