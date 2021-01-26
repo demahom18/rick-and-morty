@@ -5,10 +5,15 @@
       alt="Rick and morty"
     />
   </div>
+
   <div class="scoreboard">
-    <img src="./assets/morty.png" alt="morty">
-    <span>SCORE : {{ score }} Level: {{ level }}</span>
+    <img 
+      src="./assets/morty.png" 
+      alt="morty"
+    />
+    <span>SCORE : {{ score }} <br> Level: {{ level }}</span>
   </div>
+
   <div class="welcome-text">
     CLICK <span @click="startGame">PLAY</span> TO START PLAYING 
   </div>
@@ -45,12 +50,11 @@ export default {
       
     },
     startGame() {
-      console.log(this)
       let timeUp = 11
       const gameboard = this.$.appContext.app._container
       const playgrid = gameboard.getElementsByClassName('hole')
       let timer, delay
-      timer = 1000 - this.level*100 //10 levels
+      timer = 1100 - this.level*100 //10 levels
       delay = timer + 300
       const timeOut = setInterval(() => {
        
@@ -61,9 +65,15 @@ export default {
         }
         if (timeUp <= 0) {
           clearInterval(timeOut)
+          return this.upLevel()
         }
         if(timer <= 0) clearInterval(timeOut)
       }, delay)
+    },
+
+    upLevel() {
+      this.level++
+      this.startGame()
     },
 
     showHead(headToShow, timer){
@@ -83,34 +93,45 @@ export default {
 
 <style lang="scss">
 #app{
+  max-width:1000px;
+  height: 100vh;
+  padding-top: 0;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  font-size: 1.5rem;
+
   .header-img img{
     width:300px;
     height:auto;
-    margin: 10px auto;
+    margin: 0 auto;
   }
+
   .scoreboard {
     margin: 0 auto;
     display: flex;
-    font-size: 2rem;
-    flex-direction: column;
+    align-items: center;
+    span {
+      padding-left: 20px;
+    }
     img {
       height:auto;
       margin: 0 auto;
-      max-width:120px;
+      max-width:100px;
     }
   }
+
   .playgrid {
     display: grid;
-    grid-template-columns: repeat(3, 150px);
-    grid-template-rows:  repeat(3, 130px);
-    gap:10px;
+    grid-template-columns: repeat(3, 250px);
+    grid-template-rows:  repeat(3, 200px);
+    gap:5px;
   }
+
   .welcome-text{
-    font-size: 2.3rem;
+    font-size: 1.7rem;
     color: #5b9d47;
     span {
       color: #02a2b7;
@@ -125,5 +146,27 @@ export default {
   }
 }
 
+@media only screen and (max-width:775px) {
+  #app {
+    .playgrid {
+      grid-template-columns: repeat(3, 200px);
+      grid-template-rows:  repeat(3, 150px);
+      gap:5px;
+    }
+  }
+}
+
+@media only screen and (max-width:500px) {
+  #app {
+    .playgrid {
+      grid-template-columns: repeat(3, 135px);
+      grid-template-rows:  repeat(3, 120px);
+      gap:5px;
+    }
+    .welcome-text {
+      font-size: 1.5rem;
+    }
+  }
+}
 </style>
 
