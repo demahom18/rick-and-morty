@@ -20,7 +20,7 @@
   <GameResult 
     @restart="startGame"
     :score="score" 
-    v-if="showModal"
+    v-if="gameOver"
   />
   <div class="playgrid" >
     <RickMorty 
@@ -45,7 +45,7 @@ export default {
     return {
       score: 0,
       level: 1,
-      showModal: true
+      gameOver: true,
     }
   },  
   methods: {
@@ -57,7 +57,7 @@ export default {
       
     },
     startGame() {
-      this.showModal = false
+      this.gameOver = false
       let timeUp = 11
       const gameboard = this.$.appContext.app._container
       const playgrid = gameboard.getElementsByClassName('hole')
@@ -92,7 +92,7 @@ export default {
       
     },
     showResult() {
-      return this.showModal = true;
+      return this.gameOver = true;
     },
 
     showHead(headToShow, timer){
