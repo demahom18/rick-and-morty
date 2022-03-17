@@ -11,20 +11,29 @@
       src="./assets/morty.png" 
       alt="morty"
     />
-    <span>SCORE : {{ score }} <br> Level: {{ level }}</span>
+    <span>
+        SCORE : {{ score }} <br> 
+        Level: {{ level }} <br>
+        ERRORS : {{ errors }}
+    </span>
   </div>
 
   <div class="welcome-text">
-    CLICK <span @click="startGame">PLAY</span> TO START PLAYING 
+    CLICK <span @click="startGame">PLAY</span> TO START PLAYING
+    or See <span @click="isRulesVisible = true">the rules</span>
   </div>
+  <GameRules 
+    v-if="isRulesVisible"
+    @close="isRulesVisible = false" 
+  />
   <GameResult 
-    @restart="startGame"
+    @restart="restart"
     :score="score" 
     v-if="gameOver"
   />
   <div class="playgrid" >
     <RickMorty 
-      @wtf="handleClick" 
+      @clicked="handleClick" 
       v-for="n in 9" 
       :key="n"
     />
@@ -34,39 +43,51 @@
 <script>
 import RickMorty from './components/RickMorty.vue';
 import GameResult from './components/GameResult.vue';
+import GameRules from './components/GameRules.vue';
 
 export default {
   name: 'App',
   components: {
     RickMorty,
-    GameResult
-  },
+    GameResult,
+    GameRules
+},
   data (){
     return {
       score: 0,
       level: 1,
-      gameOver: true,
+      errors: 0,
+      gameOver: false,
+      isRulesVisible: false
     }
   },  
   methods: {
     handleClick(classList){
-      classList.forEach(cl => {
-        if(cl === 'up') this.score++
-        // console.log(cl)
-      }) 
+      if (this.gameOver) return
+      
+      if (classList.includes('up')) {
+        this.score++
+      }
+        
+      else {
+        this.errors++
+      }
+
+      if (this.errors > 2) {
+        this.gameOver = true
+      }
       
     },
     startGame() {
-      this.gameOver = false
-      let timeUp = 11
-      const gameboard = this.$.appContext.app._container
-      const playgrid = gameboard.getElementsByClassName('hole')
-      let timer, delay
-      timer = 1100 - this.level*100 //10 levels
-      delay = timer + 300
+
+      let timeUp = 11,
+          timer = 1100 - this.level*100, //10 levels
+          delay = timer + 300
+      const playgrid = document.querySelectorAll('.playgrid .hole')
+      
       const timeOut = setInterval(() => {
        
-        if(timeUp > 0 ){
+        if(timeUp > 0 && !this.gameOver){
           const ricky = this.pickRandom(playgrid)
           this.showHead(ricky, timer) 
           timeUp--
@@ -75,7 +96,9 @@ export default {
           clearInterval(timeOut)
           return this.upLevel()
         }
-        if(timer <= 0) clearInterval(timeOut)
+
+        //TODO: Handle no-click
+        if(timer <= 0 || this.gameOver) clearInterval(timeOut)
       }, delay)
     },
 
@@ -102,10 +125,17 @@ export default {
       }, timer)
       
     },
-    
-    
+
     pickRandom(grid) {
       return grid[ Math.floor(Math.random() * 9) ]
+    },
+    restart() {
+        this.score = 0
+        this.level = 1
+        this.errors = 0
+        this.gameOver = false
+
+        this.startGame()
     }
   }
 }
@@ -145,8 +175,8 @@ export default {
 
   .playgrid {
     display: grid;
-    grid-template-columns: repeat(3, 250px);
-    grid-template-rows:  repeat(3, 200px);
+    grid-template-columns: repeat(3, 200px);
+    grid-template-rows:  repeat(3, 150px);
     gap:5px;
   }
 
@@ -169,7 +199,7 @@ export default {
 @media only screen and (max-width:775px) {
   #app {
     .playgrid {
-      grid-template-columns: repeat(3, 200px);
+      grid-template-columns: repeat(3, 150px);
       grid-template-rows:  repeat(3, 150px);
       gap:5px;
     }

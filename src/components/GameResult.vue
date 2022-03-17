@@ -1,12 +1,11 @@
 <template>
   <div class="modal">
     <div class="result">
-      <span>YOUR SCORE : {{ score }}</span> 
-      <span 
-        class="rank"
-        v-if="rank != 0"
-        >You are ranked: {{ rank }}<sup >{{ mySupFormatted }}</sup> 
-      </span>
+      <div class="score">YOUR SCORE : {{ score }}</div> 
+      <div class="record">
+          <span v-if="newRecord">New record !!! : {{ record }}</span>
+          <span v-else>Your record: {{ record }}</span>          
+      </div>
       <span 
         @click="$emit('restart')"
         class="btn-restart"      
@@ -17,32 +16,19 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue'
+import useLocalStorage from '@/composables/useLocalStorage'
 export default {
   props: {
     score: {
       type:Number,
       required: true
-    },
-    rank: {
-      type: Number,
-      required: false,
-      default: 0
     }
   },
   setup(props) {
-    const mySup = ref('')
-    const numb = [...props.rank.toString()].pop() //Easy way to get the last digit
-    
-    const mySupFormatted = computed(() => {
-      if (numb == 1) return mySup.value = 'st'
-      if (numb == 2) return mySup.value = 'nd'
-      if (numb == 3) return mySup.value = 'rd'
-      else return mySup.value = 'th'
-    })
+    const { updateRecord } = useLocalStorage()
+    const { record, newRecord } = updateRecord(props.score)
 
-    return { mySupFormatted }
-    
+    return { record, newRecord }
   }
 }
 </script>
@@ -52,7 +38,7 @@ export default {
   position: absolute;
   height:100vh;
   width:100%;
-  background:rgba(100, 165, 103, 0.3);
+  background:rgba(black, 0.5);
   display:grid;
   place-content: center;
   z-index:100;
@@ -70,10 +56,10 @@ export default {
     display:grid;
     place-items: center;
     font-size: 4rem;
-  }
 
-  .rank {
-    font-size: 1.5rem;
+    .record {
+        font-size: 1.8rem;
+    }
   }
   
    .btn-restart{

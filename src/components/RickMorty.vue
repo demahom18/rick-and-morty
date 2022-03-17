@@ -22,8 +22,7 @@ export default {
     //To impeach multiple click on the same element
     //300 ms "reaction time"
     sendClick: throttle(function(){
-      this.$emit('wtf', this.$el.classList)
-        
+      this.$emit('clicked', Array.from(this.$el.classList))
     }, 300) 
   }
 }
@@ -41,7 +40,7 @@ export default {
   }
 
   .cloud img{
-    width:250px;
+    width:200px;
     bottom:-20px;
     z-index:50;
     
@@ -49,7 +48,7 @@ export default {
   .rick img{
     transform:translateY(100%);
     left: 60px;
-    width:110px;
+    width:80px;
     transition: .03s;
     
     &:active {
@@ -66,20 +65,18 @@ export default {
 @media only screen and (max-width: 775px) {
     .hole {
         .cloud img{
-            max-width:200px;
-        }
-       .rick img {
-            max-width:90px;
+            width:150px;
         }
         .cloud img{
             bottom:-10px;        
         } 
         .rick img{
             transform:translateY(110%);
-            left: 60px;
+            left: 40px;
+            max-width: 80px;
         }
         &.up .rick img {
-            transform:translateY(-10px);
+            transform:translateY(20px);
         }
     }
 }
