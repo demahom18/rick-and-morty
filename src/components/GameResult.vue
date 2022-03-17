@@ -52,7 +52,7 @@ export default {
   position: absolute;
   height:100vh;
   width:100%;
-  background:rgba(100, 165, 103, 0.3);
+  background:rgba(black, 0.5);
   display:grid;
   place-content: center;
   z-index:100;
