@@ -51,34 +51,34 @@ export default {
         border-radius: 10px;
         position: relative;
     }
+}
 
-    .close-btn {
-        width: 20px;
-        height: 20px;
-        background: rgba(white, .7);
-        position: absolute;
-        cursor: pointer;
-        top: -.75rem;
-        right: -.75rem;
+.close-btn {
+    width: 20px;
+    height: 20px;
+    background: rgba(white, .7);
+    position: absolute;
+    cursor: pointer;
+    top: -.75rem;
+    right: -.75rem;
+    z-index: 2;
+
+    &:after,
+    &:before {
+        width: 100%;
+        height: 2px;
+        content: '';
+        background: #000;
         z-index: 2;
+        position: absolute;
+    }
 
-        &:after,
-        &:before {
-            width: 100%;
-            height: 2px;
-            content: '';
-            background: #000;
-            z-index: 2;
-            position: absolute;
-        }
+    &:before {
+        transform: translate(0, 10px) rotate(-45deg);
+    }
 
-        &:before {
-            transform: translate(0, 10px) rotate(-45deg);
-        }
-
-        &:after {
-            transform: translate(0, 10px) rotate(45deg);
-        }
+    &:after {
+        transform: translate(0, 10px) rotate(45deg);
     }
 }
 </style>

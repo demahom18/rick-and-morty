@@ -19,8 +19,8 @@
   </div>
 
   <div class="welcome-text">
-    CLICK <span @click="startGame">PLAY</span> TO START PLAYING
-    or See <span @click="isRulesVisible = true">the rules</span>
+    CLICK <button @click="restart" :disabled="isPlaying">PLAY</button> TO START PLAYING
+    or See <button @click="openRules" :disabled="isPlaying">the rules</button>
   </div>
   <GameRules 
     v-if="isRulesVisible"
@@ -28,6 +28,7 @@
   />
   <GameResult 
     @restart="restart"
+    @close="gameOver = false"
     :score="score" 
     v-if="gameOver"
   />
@@ -58,10 +59,15 @@ export default {
       level: 1,
       errors: 0,
       gameOver: false,
+      isPlaying: false,
       isRulesVisible: false
     }
   },  
   methods: {
+    openRules() {
+        if (this.isPlaying) return
+        this.isRulesVisible = true
+    },
     handleClick(classList){
       if (this.gameOver) return
       
@@ -75,11 +81,12 @@ export default {
 
       if (this.errors > 2) {
         this.gameOver = true
+        this.isPlaying = false
       }
       
     },
     startGame() {
-
+      this.isPlaying = true
       let timeUp = 11,
           timer = 1100 - this.level*100, //10 levels
           delay = timer + 300
@@ -115,7 +122,8 @@ export default {
       
     },
     showResult() {
-      return this.gameOver = true;
+      this.gameOver = true;
+      this.isPlaying = false
     },
 
     showHead(headToShow, timer){
@@ -183,14 +191,26 @@ export default {
   .welcome-text{
     font-size: 1.7rem;
     color: #5b9d47;
-    span {
+    button {
       color: #02a2b7;
+      margin: 0;
+      display: inline;
+      appearance: none;
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: inherit;
       opacity: .6;
       cursor:pointer;
       text-decoration: underline;
       transition: .3s;
+
       &:hover {
         opacity: 1;
+      }
+
+      &:disabled {
+          cursor: not-allowed;
       }
     }
   }
