@@ -1,6 +1,7 @@
 <template>
   <div class="modal">
     <div class="result">
+      <span class="close-btn" @click="closeModal"></span>
       <div class="score">YOUR SCORE : {{ score }}</div> 
       <div class="record">
           <span v-if="newRecord">New record !!! : {{ record }}</span>
@@ -29,11 +30,26 @@ export default {
     const { record, newRecord } = updateRecord(props.score)
 
     return { record, newRecord }
-  }
+  },
+  mounted() {
+        this.modal = this.$el
+        this.modal.addEventListener('click', this.onOutsideClick)
+    },
+    methods: {
+        onOutsideClick(e) {
+            const result = this.modal.querySelector('.result')
+            if (!e.composedPath().includes(result)) {
+                this.closeModal()
+            }
+        },
+        closeModal() {
+            this.$emit('close')
+        }
+    }
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .modal {
   position: absolute;
   height:100vh;
@@ -53,6 +69,7 @@ export default {
     color: inherit;
     text-align: center;
     border-radius: 10px;
+    position: relative;
     display:grid;
     place-items: center;
     font-size: 4rem;
@@ -63,13 +80,20 @@ export default {
   }
   
    .btn-restart{
-     color: rgb(210, 230, 38);
-     cursor: pointer;
-     transition: 2s;
-     &:hover {
-       text-decoration: underline;
-     }
-   }
+        color: rgb(210, 230, 38);
+        cursor: pointer;
+        transition: 2s;
+        &:hover {
+        text-decoration: underline;
+        }
+    }
+
+    .close-btn {
+        &:before,
+        &:after {
+            left: 0
+        }
+    }
 }
 
 

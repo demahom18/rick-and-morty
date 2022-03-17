@@ -28,6 +28,7 @@
   />
   <GameResult 
     @restart="restart"
+    @close="gameOver = false"
     :score="score" 
     v-if="gameOver"
   />
@@ -65,7 +66,7 @@ export default {
   methods: {
     openRules() {
         if (this.isPlaying) return
-        isRulesVisible = true
+        this.isRulesVisible = true
     },
     handleClick(classList){
       if (this.gameOver) return
