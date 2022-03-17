@@ -65,20 +65,18 @@ export default {
 @media only screen and (max-width: 775px) {
     .hole {
         .cloud img{
-            max-width:200px;
-        }
-       .rick img {
-            max-width:90px;
+            width:150px;
         }
         .cloud img{
             bottom:-10px;        
         } 
         .rick img{
             transform:translateY(110%);
-            left: 60px;
+            left: 40px;
+            max-width: 80px;
         }
         &.up .rick img {
-            transform:translateY(-10px);
+            transform:translateY(20px);
         }
     }
 }
