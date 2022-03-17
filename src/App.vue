@@ -19,8 +19,13 @@
   </div>
 
   <div class="welcome-text">
-    CLICK <span @click="startGame">PLAY</span> TO START PLAYING 
+    CLICK <span @click="startGame">PLAY</span> TO START PLAYING
+    or See <span @click="isRulesVisible = true">the rules</span>
   </div>
+  <GameRules 
+    v-if="isRulesVisible"
+    @close="isRulesVisible = false" 
+  />
   <GameResult 
     @restart="restart"
     :score="score" 
@@ -38,19 +43,22 @@
 <script>
 import RickMorty from './components/RickMorty.vue';
 import GameResult from './components/GameResult.vue';
+import GameRules from './components/GameRules.vue';
 
 export default {
   name: 'App',
   components: {
     RickMorty,
-    GameResult
-  },
+    GameResult,
+    GameRules
+},
   data (){
     return {
       score: 0,
       level: 1,
       errors: 0,
       gameOver: false,
+      isRulesVisible: false
     }
   },  
   methods: {
