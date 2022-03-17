@@ -8,7 +8,7 @@
             <li>Avoid clicking on the wrong head </li>
             <li>Every wrongs click make you accumulate errors </li>
             <li>Game over if 3 errors</li>
-            <li>Every 10 rounds, the game levels up and speed of appearing/disappearing increases</li>
+            <li>Every 10 rounds, the game levels up and speed increases</li>
             <li>There is a maximum of 10 levels</li>
         </ol>
     </div>
