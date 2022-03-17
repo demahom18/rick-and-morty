@@ -40,7 +40,7 @@ export default {
   }
 
   .cloud img{
-    width:250px;
+    width:200px;
     bottom:-20px;
     z-index:50;
     
@@ -48,7 +48,7 @@ export default {
   .rick img{
     transform:translateY(100%);
     left: 60px;
-    width:110px;
+    width:80px;
     transition: .03s;
     
     &:active {

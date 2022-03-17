@@ -167,8 +167,8 @@ export default {
 
   .playgrid {
     display: grid;
-    grid-template-columns: repeat(3, 250px);
-    grid-template-rows:  repeat(3, 200px);
+    grid-template-columns: repeat(3, 200px);
+    grid-template-rows:  repeat(3, 150px);
     gap:5px;
   }
 
@@ -191,7 +191,7 @@ export default {
 @media only screen and (max-width:775px) {
   #app {
     .playgrid {
-      grid-template-columns: repeat(3, 200px);
+      grid-template-columns: repeat(3, 150px);
       grid-template-rows:  repeat(3, 150px);
       gap:5px;
     }
