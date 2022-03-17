@@ -11,7 +11,11 @@
       src="./assets/morty.png" 
       alt="morty"
     />
-    <span>SCORE : {{ score }} <br> Level: {{ level }}</span>
+    <span>
+        SCORE : {{ score }} <br> 
+        Level: {{ level }} <br>
+        ERRORS : {{ errors }}
+    </span>
   </div>
 
   <div class="welcome-text">
@@ -45,15 +49,25 @@ export default {
     return {
       score: 0,
       level: 1,
-      gameOver: true,
+      errors: 0,
+      gameOver: false,
     }
   },  
   methods: {
     handleClick(classList){
-      classList.forEach(cl => {
-        if(cl === 'up') this.score++
-        // console.log(cl)
-      }) 
+      if (this.gameOver) return
+      
+      if (classList.includes('up')) {
+        this.score++
+      }
+        
+      else {
+        this.errors++
+      }
+
+      if (this.errors > 2) {
+        this.gameOver = true
+      }
       
     },
     startGame() {
