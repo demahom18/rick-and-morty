@@ -22,13 +22,13 @@
     CLICK <span @click="startGame">PLAY</span> TO START PLAYING 
   </div>
   <GameResult 
-    @restart="startGame"
+    @restart="restart"
     :score="score" 
     v-if="gameOver"
   />
   <div class="playgrid" >
     <RickMorty 
-      @wtf="handleClick" 
+      @clicked="handleClick" 
       v-for="n in 9" 
       :key="n"
     />
@@ -71,16 +71,15 @@ export default {
       
     },
     startGame() {
-      this.gameOver = false
-      let timeUp = 11
-      const gameboard = this.$.appContext.app._container
-      const playgrid = gameboard.getElementsByClassName('hole')
-      let timer, delay
-      timer = 1100 - this.level*100 //10 levels
-      delay = timer + 300
+
+      let timeUp = 11,
+          timer = 1100 - this.level*100, //10 levels
+          delay = timer + 300
+      const playgrid = document.querySelectorAll('.playgrid .hole')
+      
       const timeOut = setInterval(() => {
        
-        if(timeUp > 0 ){
+        if(timeUp > 0 && !this.gameOver){
           const ricky = this.pickRandom(playgrid)
           this.showHead(ricky, timer) 
           timeUp--
@@ -89,7 +88,9 @@ export default {
           clearInterval(timeOut)
           return this.upLevel()
         }
-        if(timer <= 0) clearInterval(timeOut)
+
+        //TODO: Handle no-click
+        if(timer <= 0 || this.gameOver) clearInterval(timeOut)
       }, delay)
     },
 
@@ -116,10 +117,17 @@ export default {
       }, timer)
       
     },
-    
-    
+
     pickRandom(grid) {
       return grid[ Math.floor(Math.random() * 9) ]
+    },
+    restart() {
+        this.score = 0
+        this.level = 1
+        this.errors = 0
+        this.gameOver = false
+
+        this.startGame()
     }
   }
 }

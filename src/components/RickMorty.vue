@@ -22,8 +22,7 @@ export default {
     //To impeach multiple click on the same element
     //300 ms "reaction time"
     sendClick: throttle(function(){
-      this.$emit('wtf', this.$el.classList)
-        
+      this.$emit('clicked', Array.from(this.$el.classList))
     }, 300) 
   }
 }
